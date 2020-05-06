@@ -11,7 +11,9 @@ module.exports = {
         publicPath: "/"
     },
     devServer: {
-        contentBase: "dist"
+        contentBase: "dist",
+        overlay: true,
+        port: 8090
     },
     module:{
         rules: [
@@ -23,6 +25,62 @@ module.exports = {
                     },
                     {
                         loader: "css-loader"
+                    }
+                ]
+            },
+            {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[name].html"
+                        }
+                    },
+                    {
+                        loader: "extract-loader"
+                    },
+                    {
+                        loader: "html-loader",
+                        options: {
+                            //attrs: ["img:src"]
+                            attributes: {
+                                list: [
+                                    {
+                                        tag: 'img',
+                                        attribute: 'src',
+                                        type: 'src',
+                                      },
+                                      {
+                                        tag: 'img',
+                                        attribute: 'srcset',
+                                        type: 'srcset',
+                                      },
+                                      {
+                                        tag: 'img',
+                                        attribute: 'data-src',
+                                        type: 'src',
+                                      },
+                                      {
+                                        tag: 'img',
+                                        attribute: 'data-srcset',
+                                        type: 'srcset',
+                                      },
+                                ]
+                            }
+                        }
+                        
+                    }
+                ]
+            },
+            {
+                test: /\.(jpg|gif|png)$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "images/[name]-[hash:8].[ext]"
+                        }
                     }
                 ]
             }
